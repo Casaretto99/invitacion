@@ -633,6 +633,13 @@ function showAlready(data) {
 
   const box = document.getElementById('already-box');
 
+  // Actualizar panel izquierdo
+  document.getElementById('guestName').textContent = data.nombre;
+  const cupo = parseInt(data.cupo) || 1;
+  document.getElementById('guestCupo').textContent =
+    `Tu invitación es para hasta ${cupo} ${cupo === 1 ? 'persona' : 'personas'}.`;
+  document.getElementById('guestMax').textContent = cupo;
+
   const confirmo =
     String(data.asistencia).toLowerCase().includes('confirm');
 
