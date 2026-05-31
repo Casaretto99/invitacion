@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitación — Carlos Bogado</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #FAC775;
+    --dark: #1a1a18;
+    --dark2: #2C2C2A;
+    --muted: #888780;
+    --light: #D3D1C7;
+  }
+  body {
+    background: var(--dark);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    font-family: 'Lato', sans-serif;
+  }
+  .loading { text-align: center; padding: 1.5rem; color: var(--muted); font-size: 13px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(250,199,117,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 8px; vertical-align: middle; }
+  .greeting { font-size: 13px; color: var(--muted); margin-bottom: 1rem; line-height: 1.6; text-align: center; }
+  .greeting strong { color: var(--gold); font-weight: 700; }
+  .cupo-label { font-size: 12px; color: var(--muted); margin-bottom: 0.6rem; display: block; text-align: center; }
+  .cupo-btns { display: flex; gap: 8px; margin-bottom: 1.25rem; justify-content: center; flex-wrap: wrap; }
+  .action-btns { display: flex; gap: 8px; }
+  .btn-confirm { flex: 1; padding: 13px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; border: none; background: var(--gold); color: var(--dark2); font-family: 'Lato', sans-serif; transition: opacity 0.2s, transform 0.1s; letter-spacing: 0.3px; }
+  .btn-confirm:hover:not(:disabled) { opacity: 0.9; }
+  .btn-confirm:active:not(:disabled) { transform: scale(0.98); }
+  .btn-confirm:disabled { opacity: 0.3; cursor: not-allowed; }
+  .btn-decline { padding: 13px 16px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--muted); font-family: 'Lato', sans-serif; transition: all 0.15s; }
+  .btn-decline:hover { border-color: rgba(255,255,255,0.2); color: var(--light); }
+  .success-box { text-align: center; padding: 1.5rem 1rem; border-radius: 12px; }
+  .success-icon { font-size: 40px; display: block; margin-bottom: 0.5rem; }
+  .success-title { font-size: 16px; font-weight: 700; display: block; margin-bottom: 4px; }
+  .success-sub { font-size: 12px; display: block; opacity: 0.7; }
+  .success-confirm { background: rgba(99,153,34,0.12); border: 1px solid rgba(99,153,34,0.2); }
+  .success-confirm .success-title { color: #C0DD97; }
+  .success-confirm .success-sub { color: #97C459; }
+  .success-decline { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+  .success-decline .success-title { color: var(--light); }
+  .success-decline .success-sub { color: var(--muted); }
+  .already-box { text-align: center; padding: 1.25rem 1rem; border-radius: 12px; background: rgba(250,199,117,0.08); border: 1px solid rgba(250,199,117,0.15); }
+  .already-box .success-title { color: var(--gold); }
+  .already-box .success-sub { color: var(--muted); }
+  .error-box { background: rgba(226,75,74,0.1); border: 1px solid rgba(226,75,74,0.2); border-radius: 10px; padding: 1rem; text-align: center; font-size: 13px; color: #F09595; }
+  .person-btn.selected{
+    background:#0B2E83;
+    color:#fff;
+    border-color:#0B2E83;
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 1rem 0.75rem; align-items: flex-start; }
+    .card { border-radius: 16px; }
+    .event-name { font-size: 28px; }
+    .card-body { padding: 1.25rem 1.25rem; }
+    .card-header { padding: 2rem 1.25rem 1.5rem; }
+    .cupo-btn { min-width: 60px; padding: 14px 4px; font-size: 12px; }
+    .btn-confirm, .btn-decline { padding: 14px 10px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <!-- BANNER -->
+  <section class="hero">
+    <img
+      src="invitacion.png"
+      alt="Invitación Carlos Bogado"
+      class="hero-img"
+    >
+  </section>
+  <!-- CONTADOR -->
+  <section class="countdown-section">
+    <h2>FALTAN PARA LA CELEBRACIÓN</h2>
+    <div class="countdown">
+      <div class="time-box">
+        <span id="dias">00</span>
+        <small>DÍAS</small>
+      </div>
+      <div class="separator">:</div>
+      <div class="time-box">
+        <span id="horas">00</span>
+        <small>HORAS</small>
+      </div>
+      <div class="separator">:</div>
+      <div class="time-box">
+        <span id="minutos">00</span>
+        <small>MINUTOS</small>
+      </div>
+      <div class="separator">:</div>
+      <div class="time-box">
+        <span id="segundos">00</span>
+        <small>SEGUNDOS</small>
+      </div>
+    </div>
+  </section>
+  <!-- RSVP -->
+  <section class="rsvp-card">
+    <div class="guest-panel">
+      <div class="guest-icon">💌</div>
+      <h3>
+        Hola,<br>
+        <span id="guestName">Invitado</span>
+      </h3>
+      <p id="guestCupo">
+        Tu invitación es para hasta 1 persona.
+      </p>
+      <div class="guest-max">
+        👥 Máximo <span id="guestMax">1</span> personas
+      </div>
+    </div>
+    <div class="rsvp-panel">
+      <div id="loading">
+        Cargando invitación...
+      </div>
+      <div id="rsvp-content"></div>
+      <div id="already-box" style="display:none;"></div>
+      <div id="error-box" style="display:none;"></div>
+      <div id="success-confirm" style="display:none;"></div>
+      <div id="success-decline" style="display:none;"></div>
+    </div>
+  </section>
+  <!-- INFO -->
+  <section class="info-grid">
+    <div class="info-card">
+      <h4>📍 UBICACIÓN</h4>
+      <p>Quinta Nanawa</p>
+      <p>Av. San José</p>
+      <a
+        href="https://maps.app.goo.gl/WWWqQ9ujVFghY6dE6?g_st=ic"
+        target="_blank"
+        class="info-btn"
+      >
+        Abrir ubicación
+      </a>
+    </div>
+    <div class="info-card">
+      <h4>🕘 HORARIO</h4>
+      <div class="hour">
+        21:00 hs
+      </div>
+      <small>¡Nos vemos allí!</small>
+    </div>
+    <div class="info-card">
+      <h4>📞 CONTACTO DE LA ORGANIZACIÓN</h4>
+      <div class="phone">
+        +595 972 607418
+      </div>
+      <a
+        href="https://wa.me/595972607418"
+        target="_blank"
+        class="info-btn"
+      >
+        Consultar por WhatsApp
+      </a>
+    </div>
+  </section>
+  <footer>
+    Con cariño, 💛 Familia Bogado
+  </footer>
+</div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1Dx8DOFtmbGv8qBoeCIZfC4EmGaY93abznv6IAbyHlmklTm0Wi-CzBoThkUPWQGAX/exec';
+
+function getParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+const TOKEN = getParam('token');
+
+let invitado = null;
+let personas = null;
+
+async function init() {
+
+  if (!TOKEN) {
+    document.getElementById('loading').style.display = 'none';
+    showError('Token inválido');
+    return;
+  }
+
+  try {
+
+    const res = await fetch(
+      `${SCRIPT_URL}?token=${encodeURIComponent(TOKEN)}`
+    );
+
+    const data = await res.json();
+
+    document.getElementById('loading').style.display = 'none';
+
+    if (!data.ok) {
+      showError(data.error);
+      return;
+    }
+
+    invitado = data;
+
+    if (data.yaRespondio) {
+      showAlready(data);
+    } else {
+      renderRSVP();
+    }
+
+  } catch (err) {
+    document.getElementById('loading').style.display = 'none';
+    console.error(err); showError(err.message || 'Error al cargar invitación');
+  }
+}
+
+async function confirmar() {
+
+  if (!personas) return;
+
+  const btn = document.getElementById('btn-confirm');
+
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+
+  try {
+
+    const response = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        token: TOKEN,
+        id: invitado.id,
+        nombre: invitado.nombre,
+        personas: personas,
+        asistencia: 'Confirma'
+      })
+    });
+
+    const result = await response.json();
+
+    if (!result.ok) {
+      throw new Error(result.error);
+    }
+
+    document.getElementById('rsvp-content').style.display = 'none';
+
+    document.getElementById('sc-title').textContent =
+      `¡Gracias, ${invitado.nombre}!`;
+
+    document.getElementById('sc-sub').textContent =
+      personas === 1
+        ? 'Anotamos tu lugar.'
+        : `Anotamos ${personas} lugares.`;
+
+    document.getElementById('success-confirm').style.display = 'block';
+
+  } catch (err) {
+
+    btn.disabled = false;
+    btn.textContent = '✓ Confirmar asistencia';
+
+    showError(err.message || 'No se pudo guardar');
+  }
+}
+
+async function declinar() {
+
+  try {
+
+    const response = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        token: TOKEN,
+        id: invitado.id,
+        nombre: invitado.nombre,
+        personas: 0,
+        asistencia: 'No asiste'
+      })
+    });
+
+    const result = await response.json();
+
+    if (!result.ok) {
+      throw new Error(result.error);
+    }
+
+    document.getElementById('rsvp-content').style.display = 'none';
+    document.getElementById('success-decline').style.display = 'block';
+
+  } catch (err) {
+    showError(err.message || 'No se pudo guardar');
+  }
+}
+
+
+function showAlready(data) {
+
+  const box = document.getElementById('already-box');
+
+  const confirmo =
+    String(data.asistencia).toLowerCase().includes('confirm');
+
+  const p = parseInt(data.personas) || 0;
+
+  if (confirmo) {
+
+    document.getElementById('already-title').textContent =
+      '¡Ya confirmaste, ' + data.nombre + '!';
+
+    document.getElementById('already-sub').textContent =
+      p === 1 ? 'Anotaste 1 lugar.' : 'Anotaste ' + p + ' lugares.';
+
+  } else {
+
+    document.getElementById('already-title').textContent =
+      'Ya registramos tu respuesta';
+
+    document.getElementById('already-sub').textContent =
+      'Indicaste que no podrás asistir.';
+  }
+
+  box.style.display = 'block';
+}
+
+function renderRSVP() {
+  const cupo = parseInt(invitado.cupo);
+  document.getElementById('guestName').textContent =
+    invitado.nombre;
+  document.getElementById('guestCupo').textContent =
+    `Tu invitación es para hasta ${cupo} personas.`;
+  document.getElementById('guestMax').textContent =
+    cupo;
+  let botones = '';
+  for(let i=1;i<=cupo;i++){
+    botones += `
+      <button
+        class="person-btn"
+        onclick="seleccionar(${i},this)"
+      >
+        ${i===1 ? 'Solo yo' : i+' personas'}
+      </button>
+    `;
+  }
+  document.getElementById('rsvp-content').innerHTML = `
+    <h2>¿Cuántos asistirán?</h2>
+    <p>
+      Seleccioná la cantidad de personas
+    </p>
+    <div class="person-grid">
+      ${botones}
+    </div>
+    <div class="action-buttons">
+      <button
+        id="btn-confirm"
+        class="btn-primary"
+        onclick="confirmar()"
+        disabled
+      >
+        ✓ Confirmar asistencia
+      </button>
+      <button
+        class="btn-secondary"
+        onclick="declinar()"
+      >
+        ✕ No podré asistir
+      </button>
+    </div>
+  `;
+}
+
+function seleccionar(n, btn) {
+
+  personas = n;
+
+  document
+    .querySelectorAll('.person-btn')
+    .forEach(b => b.classList.remove('selected'));
+
+  btn.classList.add('selected');
+
+  document.getElementById('btn-confirm').disabled = false;
+}
+
+
+function showError(msg) {
+  document.getElementById('error-box').textContent = '⚠ ' + msg;
+  document.getElementById('error-box').style.display = 'block';
+}
+
+function iniciarContador(){
+  const fechaEvento =
+    new Date("2026-06-16T21:00:00");
+  setInterval(()=>{
+    const ahora=new Date();
+    const diff=fechaEvento-ahora;
+    if(diff<=0)return;
+    const dias=Math.floor(diff/86400000);
+    const horas=Math.floor(
+      (diff%86400000)/3600000
+    );
+    const minutos=Math.floor(
+      (diff%3600000)/60000
+    );
+    const segundos=Math.floor(
+      (diff%60000)/1000
+    );
+    document.getElementById('dias').textContent=dias;
+    document.getElementById('horas').textContent=horas;
+    document.getElementById('minutos').textContent=minutos;
+    document.getElementById('segundos').textContent=segundos;
+  },1000);
+}
+iniciarContador();
+
+init();
+</script>
+</body>
+</html>
