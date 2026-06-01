@@ -427,9 +427,15 @@
   <section class="rsvp-card">
     <div class="guest-panel">
       <div class="guest-icon">
-	  <svg width="48" height="36" viewBox="0 0 64 44" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="64" height="44" rx="5" fill="#0d1b3e" stroke="#b8c4d0" stroke-width="1.2"/>
-          <polyline points="0,0 32,24 64,0" fill="none" stroke="#b8c4d0" stroke-width="1.5"/>
+	  <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+          <!-- Círculo fondo -->
+          <circle cx="28" cy="28" r="27" fill="#f0f2f8" stroke="#dde2f0" stroke-width="1"/>
+          <!-- Cuerpo del sobre -->
+          <rect x="10" y="17" width="36" height="24" rx="3" fill="none" stroke="#0d1b3e" stroke-width="2"/>
+          <!-- Solapa superior (V) -->
+          <polyline points="10,17 28,30 46,17" fill="none" stroke="#0d1b3e" stroke-width="2" stroke-linejoin="round"/>
+          <!-- Corazón esquina inferior derecha -->
+          <path d="M38,34 C38,34 33,30 33,27.5 C33,26 34.2,25 35.5,25.5 C36.5,25.8 38,27 38,27 C38,27 39.5,25.8 40.5,25.5 C41.8,25 43,26 43,27.5 C43,30 38,34 38,34Z" fill="#0d1b3e"/>
         </svg>
 	  </div>
       <h3>
@@ -460,7 +466,7 @@
         <span id="sc-sub" style="font-size:12px;color:#8a9ab0;display:block;"></span>
       </div>
       <div id="success-decline" style="display:none;">
-        <span style="font-size:28px;display:block;margin-bottom:6px;">💛</span>
+        <span style="font-size:28px;display:block;margin-bottom:6px;">🩵</span>
         <span style="font-size:15px;font-weight:700;color:#0d1b3e;display:block;margin-bottom:4px;">¡Gracias por avisar!</span>
         <span style="font-size:12px;color:#8a9ab0;display:block;">Te vamos a extrañar en la fiesta.</span>
       </div>
