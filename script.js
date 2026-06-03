@@ -1,4 +1,4 @@
-const PASSWORD = "Carlos80";
+const PASSWORD = "bogado80";
 
 const API =
 "https://script.google.com/macros/s/AKfycbxmZlgYfD6fFMHopIS_86mw-srwKmcu_IECc3hLJ6XtNEtkep-da0QB0R2RzUlRN68r/exec";
