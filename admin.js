@@ -22,7 +22,8 @@ async function cargarDatos() {
 
     try {
 
-        const response = await fetch(API);
+        const response =
+  await fetch(API + "?key=bogado80");
         const data = await response.json();
 
         console.log("JSON recibido:", data);
