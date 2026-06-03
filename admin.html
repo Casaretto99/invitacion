@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Confirmaciones</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loginBox" class="login-box">
+    <h2>Panel de Confirmaciones</h2>
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Contraseña"
+    >
+
+    <button onclick="login()">
+        Ingresar
+    </button>
+</div>
+
+<div id="panel" style="display:none;">
+
+    <header>
+        <h1>Confirmaciones</h1>
+    </header>
+
+    <section class="cards">
+
+        <div class="card">
+            <h3>Confirmados</h3>
+            <span id="confirmados">0</span>
+        </div>
+
+        <div class="card">
+            <h3>Pendientes</h3>
+            <span id="pendientes">0</span>
+        </div>
+
+        <div class="card">
+            <h3>No asistirán</h3>
+            <span id="noAsisten">0</span>
+        </div>
+
+        <div class="card">
+            <h3>Personas Confirmadas</h3>
+            <span id="personas">0</span>
+        </div>
+
+    </section>
+
+    <section class="acciones">
+
+        <button onclick="exportarExcel()">
+            Exportar Excel
+        </button>
+
+        <button onclick="window.print()">
+            Exportar PDF
+        </button>
+
+    </section>
+
+    <section class="tabla">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Invitado</th>
+                    <th>Estado</th>
+                    <th>Cupo</th>
+                    <th>Confirmados</th>
+                </tr>
+            </thead>
+
+            <tbody id="tbody">
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th colspan="2">
+                        Totales
+                    </th>
+
+                    <th id="totalCupos">
+                        0
+                    </th>
+
+                    <th id="totalConfirmados">
+                        0
+                    </th>
+                </tr>
+            </tfoot>
+
+        </table>
+
+    </section>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

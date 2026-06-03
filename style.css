@@ -1,0 +1,63 @@
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f6fa;
+    margin:0;
+    padding:20px;
+}
+
+.login-box{
+    max-width:300px;
+    margin:100px auto;
+    text-align:center;
+}
+
+.login-box input{
+    width:100%;
+    padding:10px;
+    margin-bottom:10px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+}
+
+.card span{
+    font-size:32px;
+    font-weight:bold;
+}
+
+.acciones{
+    margin-bottom:20px;
+}
+
+button{
+    padding:10px 15px;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+}
+
+th,
+td{
+    padding:12px;
+    border:1px solid #ddd;
+}
+
+tfoot{
+    font-weight:bold;
+    background:#f2f2f2;
+}
