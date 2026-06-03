@@ -1,95 +1,179 @@
 const PASSWORD = "bogado80";
 
 const API =
-"https://script.google.com/macros/s/AKfycbxmZlgYfD6fFMHopIS_86mw-srwKmcu_IECc3hLJ6XtNEtkep-da0QB0R2RzUlRN68r/exec";
+"https://script.google.com/macros/s/AKfycbzeb4e7rLZM7JvJjU6lG50p-iudgwBiV-XCFqMZKmYE_M5Gwg6v4mdK33J-xREFpEYc/exec";
 
-function login() {
+let datosGlobales = [];
 
-    const pass = document.getElementById("password").value;
+function login(){
 
-    if (pass !== PASSWORD) {
+    const pass =
+        document.getElementById("password").value;
+
+    if(pass !== PASSWORD){
         alert("Contraseña incorrecta");
         return;
     }
 
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("panel").style.display = "block";
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("panel").style.display="block";
 
     cargarDatos();
 }
 
-async function cargarDatos() {
+async function cargarDatos(){
 
-    try {
+    try{
 
         const response =
-  await fetch(API + "?key=bogado80");
-        const data = await response.json();
+            await fetch(`${API}?key=${PASSWORD}`);
 
-        console.log("JSON recibido:", data);
+        const data =
+            await response.json();
 
-        if (!data.resumen) {
-            console.error("No existe data.resumen");
-            alert("Error: la API no devuelve el formato esperado.");
-            return;
-        }
+        datosGlobales = data.invitados;
 
         document.getElementById("confirmados").textContent =
-            data.resumen.confirmados || 0;
+            data.resumen.confirmados;
 
         document.getElementById("pendientes").textContent =
-            data.resumen.pendientes || 0;
+            data.resumen.pendientes;
 
         document.getElementById("noAsisten").textContent =
-            data.resumen.noAsiste || 0;
+            data.resumen.noAsisten;
 
         document.getElementById("personas").textContent =
-            data.resumen.personasConfirmadas || 0;
+            data.resumen.personasConfirmadas;
 
-        let totalCupos = 0;
-        let totalConfirmados = 0;
+        document.getElementById("cupos").textContent =
+            data.resumen.totalCupos;
 
-        const tbody = document.getElementById("tbody");
+        cargarTablaGeneral(data.invitados);
 
-        tbody.innerHTML = "";
+        cargarConfirmados(data.invitados);
 
-        if (data.invitados && data.invitados.length > 0) {
+        cargarNoAsisten(data.invitados);
 
-            data.invitados.forEach(item => {
+    }catch(error){
 
-                totalCupos += Number(item.cupo || 0);
-                totalConfirmados += Number(item.personas || 0);
+        console.error(error);
 
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${item.nombre || ""}</td>
-                        <td>${item.estado || ""}</td>
-                        <td>${item.cupo || 0}</td>
-                        <td>${item.personas || 0}</td>
-                    </tr>
-                `;
-            });
-        }
+        alert("Error al cargar datos");
 
-        document.getElementById("totalCupos").textContent =
-            totalCupos;
-
-        document.getElementById("totalConfirmados").textContent =
-            totalConfirmados;
-
-    } catch (error) {
-
-        console.error("Error cargando datos:", error);
-
-        alert(
-            "No se pudo conectar con el Apps Script. Revisá la consola (F12)."
-        );
     }
+
 }
 
-function exportarExcel() {
+function cargarTablaGeneral(lista){
 
-    alert(
-        "La exportación Excel se implementará en el siguiente paso."
+    let html="";
+
+    let totalCupos=0;
+    let totalConfirmados=0;
+
+    lista.forEach(item=>{
+
+        totalCupos += Number(item.cupo || 0);
+        totalConfirmados += Number(item.personas || 0);
+
+        html += `
+        <tr>
+            <td>${item.id}</td>
+            <td>${item.nombre}</td>
+            <td>${item.estado}</td>
+            <td>${item.cupo}</td>
+            <td>${item.personas}</td>
+        </tr>
+        `;
+
+    });
+
+    document.getElementById("tbody").innerHTML=html;
+
+    document.getElementById("totalCupos").textContent =
+        totalCupos;
+
+    document.getElementById("totalConfirmados").textContent =
+        totalConfirmados;
+}
+
+function cargarConfirmados(lista){
+
+    const datos =
+        lista.filter(x=>x.estado==="Confirma");
+
+    construirTabla(
+        "tablaConfirmados",
+        datos
     );
+}
+
+function cargarNoAsisten(lista){
+
+    const datos =
+        lista.filter(x=>x.estado==="No asiste");
+
+    construirTabla(
+        "tablaNoAsisten",
+        datos
+    );
+}
+
+function construirTabla(id,lista){
+
+    let html=`
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Invitado</th>
+            <th>Cupo</th>
+            <th>Confirmados</th>
+        </tr>
+    </thead>
+    <tbody>
+    `;
+
+    lista.forEach(item=>{
+
+        html+=`
+        <tr>
+            <td>${item.id}</td>
+            <td>${item.nombre}</td>
+            <td>${item.cupo}</td>
+            <td>${item.personas}</td>
+        </tr>
+        `;
+
+    });
+
+    html += "</tbody>";
+
+    document.getElementById(id).innerHTML = html;
+}
+
+function exportarExcel(){
+
+    const wb =
+        XLSX.utils.book_new();
+
+    const ws =
+        XLSX.utils.table_to_sheet(
+            document.getElementById("tablaGeneral")
+        );
+
+    XLSX.utils.book_append_sheet(
+        wb,
+        ws,
+        "Invitados"
+    );
+
+    XLSX.writeFile(
+        wb,
+        "confirmaciones.xlsx"
+    );
+}
+
+function exportarPDF(){
+
+    window.print();
 }

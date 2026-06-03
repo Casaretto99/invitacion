@@ -1,19 +1,19 @@
 body{
-    font-family: Arial, sans-serif;
+    font-family:Arial,sans-serif;
     background:#f5f6fa;
     margin:0;
     padding:20px;
 }
 
 .login-box{
-    max-width:300px;
+    max-width:320px;
     margin:100px auto;
     text-align:center;
 }
 
 .login-box input{
     width:100%;
-    padding:10px;
+    padding:12px;
     margin-bottom:10px;
 }
 
@@ -26,13 +26,13 @@ body{
 
 .card{
     background:white;
+    border-radius:12px;
     padding:20px;
-    border-radius:10px;
-    box-shadow:0 2px 5px rgba(0,0,0,.1);
+    box-shadow:0 2px 5px rgba(0,0,0,.08);
 }
 
 .card span{
-    font-size:32px;
+    font-size:34px;
     font-weight:bold;
 }
 
@@ -43,21 +43,74 @@ body{
 button{
     padding:10px 15px;
     cursor:pointer;
+    margin-right:10px;
+}
+
+.table-wrapper{
+    overflow-x:auto;
+    margin-bottom:30px;
 }
 
 table{
     width:100%;
+    min-width:700px;
     border-collapse:collapse;
     background:white;
 }
 
 th,
 td{
-    padding:12px;
     border:1px solid #ddd;
+    padding:10px;
+    text-align:left;
+}
+
+thead{
+    background:#f0f0f0;
 }
 
 tfoot{
     font-weight:bold;
-    background:#f2f2f2;
+    background:#f7f7f7;
+}
+
+@media(max-width:768px){
+
+    body{
+        padding:10px;
+    }
+
+    h1{
+        font-size:24px;
+    }
+
+    .card span{
+        font-size:28px;
+    }
+
+}
+
+@media print {
+
+    .cards,
+    .acciones,
+    h2:not(:first-of-type),
+    #tablaConfirmados,
+    #tablaNoAsisten {
+        display: none !important;
+    }
+
+    body {
+        padding: 0;
+        margin: 0;
+    }
+
+    table {
+        font-size: 10px;
+        min-width: 100%;
+    }
+
+    h1 {
+        margin-bottom: 10px;
+    }
 }
