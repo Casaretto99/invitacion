@@ -186,10 +186,10 @@ function cargarPendientes(lista){
         );
 
         const telefono = item.telefono
-            ? item.telefono.toString().replace(/\D/g, "")
+            ? String(parseInt(item.telefono)).replace(/\D/g, "")
             : "";
 
-        const waLink = telefono
+        const waLink = telefono && telefono.length > 6
             ? `<a class="btn-wa" href="https://wa.me/${telefono}?text=${mensaje}" target="_blank">📲 Enviar recordatorio</a>`
             : `<span style="color:#aaa;font-size:12px;">Sin teléfono</span>`;
 
