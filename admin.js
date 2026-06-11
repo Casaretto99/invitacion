@@ -158,7 +158,7 @@ function cargarPendientes(lista){
     const BASE_URL = "https://project-i7uln.vercel.app/";
 
     const datos = lista.filter(x =>
-        !x.estado || x.estado === "" || x.estado === "Pendiente"
+        x.estado === "Pendiente"
     );
 
     let html = `
