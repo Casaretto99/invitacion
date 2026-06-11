@@ -90,13 +90,31 @@ tfoot{
 
 }
 
+.btn-wa {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #25D366;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+    transition: background 0.2s;
+}
+
+.btn-wa:hover {
+    background: #1ebe5d;
+}
+
 @media print {
 
     .cards,
     .acciones,
     h2:not(:first-of-type),
     #tablaConfirmados,
-    #tablaNoAsisten {
+    #tablaNoAsisten,
+    #tablaPendientes {
         display: none !important;
     }
 
