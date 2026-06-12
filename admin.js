@@ -155,10 +155,10 @@ function construirTabla(id,lista){
 
 function cargarPendientes(lista){
 
-    const BASE_URL = "https://project-i7uln.vercel.app/";
+    const BASE_URL = "https://invitacioncarlosbogado.vercel.app/";
 
     const datos = lista.filter(x =>
-        !x.estado || x.estado === "" || x.estado === "Pendiente"
+        x.estado === "Pendiente"
     );
 
     let html = `
@@ -178,18 +178,18 @@ function cargarPendientes(lista){
         const link = `${BASE_URL}?token=${item.token}`;
 
         const mensaje = encodeURIComponent(
-            `Hola! ¿Qué tal? 🙋🏻‍♀️\n\n` +
-            `Paso para recordarte que tu confirmación de asistencia sigue pendiente.\n\n` +
-            `${link}\n\n` +
+            `Hola ¿Qué tal? 🙋🏻‍♀️\n\n` +
+            `Paso para recordarte que tu confirmación de asistencia sigue pendiente. ` +
             `Agradeceremos tu pronta respuesta. La fecha límite para confirmar es el 12 de junio.\n\n` +
+            `${link}\n\n` +
             `¡Muchas gracias! 💙`
         );
 
         const telefono = item.telefono
-            ? item.telefono.toString().replace(/\D/g, "")
+            ? String(parseInt(item.telefono)).replace(/\D/g, "")
             : "";
 
-        const waLink = telefono
+        const waLink = telefono && telefono.length > 6
             ? `<a class="btn-wa" href="https://wa.me/${telefono}?text=${mensaje}" target="_blank">📲 Enviar recordatorio</a>`
             : `<span style="color:#aaa;font-size:12px;">Sin teléfono</span>`;
 
