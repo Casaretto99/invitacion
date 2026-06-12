@@ -1,7 +1,7 @@
 const PASSWORD = "bogado80";
 
 const API =
-"https://script.google.com/macros/s/AKfycbzeb4e7rLZM7JvJjU6lG50p-iudgwBiV-XCFqMZKmYE_M5Gwg6v4mdK33J-xREFpEYc/exec";
+"https://script.google.com/macros/s/AKfycbzbgvhCsJYlkOpj5LZ9WnvqJWFiKsfwzyD768Zg1OdA8cu7m3uWzcfrs-dzD5ai0rn-/exec";
 
 let datosGlobales = [];
 
@@ -158,7 +158,7 @@ function cargarPendientes(lista){
     const BASE_URL = "https://project-i7uln.vercel.app/";
 
     const datos = lista.filter(x =>
-        x.estado === "Pendiente"
+        !x.estado || x.estado === "" || x.estado === "Pendiente"
     );
 
     let html = `
@@ -186,10 +186,10 @@ function cargarPendientes(lista){
         );
 
         const telefono = item.telefono
-            ? String(parseInt(item.telefono)).replace(/\D/g, "")
+            ? item.telefono.toString().replace(/\D/g, "")
             : "";
 
-        const waLink = telefono && telefono.length > 6
+        const waLink = telefono
             ? `<a class="btn-wa" href="https://wa.me/${telefono}?text=${mensaje}" target="_blank">📲 Enviar recordatorio</a>`
             : `<span style="color:#aaa;font-size:12px;">Sin teléfono</span>`;
 
